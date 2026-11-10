@@ -1,58 +1,8 @@
-# SmartContractRAG — Grounded RAG for Smart-Contract Audit Reports
-
-[![CI](https://github.com/eLSeR17/smart-contract-rag/actions/workflows/ci.yml/badge.svg)](https://github.com/eLSeR17/smart-contract-rag/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-> **What it demonstrates**: a production-grade **Retrieval-Augmented Generation
-> (RAG)** system with **grounded, citable answers** and an **anti-hallucination
-> layer** — built entirely on **local models** (Ollama + sentence-transformers),
-> with a deterministic test suite that runs **without network or a GPU**.
-
-## Demo
-
-A grounded live answer over the real corpus (546 chunks, local LLM): the model
-cannot answer without retrieved evidence — hallucination is refused by design.
-
-![grounded answer](docs/media/demo-grounded-answer.svg)
-
-Full live-run evidence (environment, corpus, index, eval table): `docs/LIVE_DEMO.md`.
-
-An **interactive demo UI** (Streamlit: Ask / Evals / About, three connection
-modes) ships in [`demo_ui/`](demo_ui/README.md) and is **live at
-<https://smart-contract-rag-3wnnafjfnjku54baybdec2.streamlit.app/>** — the
-evidence-first hosted edition (retrieval + grounded citations; the full
-generating pipeline runs locally, see [`docs/LIVE_DEMO.md`](docs/LIVE_DEMO.md)).
-Step-by-step deploy guide in [`demo_ui/README.md`](demo_ui/README.md).
+# SmartContract
 
 ## Problem
 
 Language models confidently answer questions even when they lack the facts. For
-a domain like **smart-contract security**, that is dangerous: a hallucinated
-"the function is safe because it uses X" can mislead a reviewer into signing off
-on a vulnerable codebase. RAG alone does not solve this — retrieval can still
-surface *plausible-looking* evidence, and the model can drift from it.
-
-## Solution
-
-SmartContractRAG answers questions about **public smart-contract audit reports**
-(Trail of Bits) and *proves* every answer is grounded:
-
-- **Retrieval**: token-aware chunking, local embeddings, hybrid (vector + lexical)
-  reranking for better precision.
-- **Grounding**: an anti-hallucination layer verifies that the answer's key
-  terms actually appear in the retrieved evidence. If there is not enough
-  grounding, the system **refuses** rather than guessing.
-- **Citations**: every answer is tied to numbered sources and resolved back to a
-  document + page, so a reviewer can verify the claim.
-- **Guardrails**: input validation (empty/too-long/injected queries) and output
-  verification (grounded? sourced?) wrap the whole flow.
-- **Eval pipeline**: a golden dataset + dual judge (deterministic heuristic in
-  CI, LLM-as-judge locally) scores faithfulness, answer relevance, citation
-  accuracy, context precision/recall and hallucination rate, with a regression
-  guard that fails CI on quality degradation.
-
-Everything runs on a **local Ollama model (`qwen2.5-coder:7b`)** and a local
-embedder — **no cloud, no API keys, no paid services**.
 
 ## Architecture
 
@@ -343,7 +293,6 @@ MIT — see [LICENSE](LICENSE). Free to use, modify and distribute with attribut
 
 ## Related portfolio projects
 
-`smart-contract-rag` is externally cross-validated by
 [`evalforge`](https://github.com/eLSeR17/evalforge), a sibling portfolio project
 that reproduces the retrieval gaps of this project's own harness from the
 outside (black-box, docker-exec). See the
